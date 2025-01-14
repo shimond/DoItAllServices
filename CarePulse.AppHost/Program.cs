@@ -1,7 +1,8 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var redisDb = builder.AddRedis("cacheDb")
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithRedisInsight();
 var rabbit = builder.AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent);
 var patientDataHistoryDb = builder.AddSqlServer("patinetDataHistoryDb")
