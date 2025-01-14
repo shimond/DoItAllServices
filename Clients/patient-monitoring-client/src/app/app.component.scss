@@ -1,0 +1,127 @@
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0288d1;
+  }
+  
+  .card {
+    max-width: 1300px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #e3f2fd;
+  }
+  
+  .input-field {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .flex{
+    display: flex;
+    justify-content: start;
+    max-width: 1300px;
+    gap: 10px;
+  }
+  
+  .result-card, .history-card, .patient-info-card {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #e1f5fe;
+  }
+  
+  .result-content {
+    font-size: 1.1em;
+    color: #333;
+  }
+  
+  .patient-info {
+    margin-bottom: 15px;
+  }
+  
+  .vitals-info {
+    font-size: 1.2em;
+    color: #0288d1;
+    font-weight: bold;
+  }
+  
+  .events-card.critical {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffebee;
+    border: 2px solid #d32f2f;
+    border-radius: 8px;
+  }
+  
+  .critical-title {
+    color: #d32f2f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  mat-divider {
+    margin: 10px 0;
+  }
+  
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  @media (max-width: 768px) {
+    .card, .result-card, .events-card, .history-card, .patient-info-card {
+      width: 90%;
+    }
+  
+    .button-group {
+      flex-direction: column;
+    }
+  }
+
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  .content-container {
+    margin-top: 64px; /* Toolbar height */
+    padding: 20px;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    background: #e3f2fd;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: #0288d1;
+  }
+
+  .the-table {
+    margin:20px;
+  }
+
+  .button-group{
+    margin-top:46px
+  }

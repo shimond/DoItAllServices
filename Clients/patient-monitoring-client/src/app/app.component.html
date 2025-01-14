@@ -1,0 +1,85 @@
+<mat-toolbar color="primary">
+    <span>CarePulse Patient Monitoring Systems</span>
+</mat-toolbar>
+<div class="content-container">
+    <h2 class="title">Patient Monitoring Dashboard</h2>
+    <mat-card class="card">
+        <mat-table [dataSource]="patients" class="the-table">
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let patient"> {{patient.id}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="firstName">
+                <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+                <mat-cell *matCellDef="let patient"> {{patient.firstName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="lastName">
+                <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+                <mat-cell *matCellDef="let patient"> {{patient.lastName}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let patient">
+                    <button mat-raised-button color="primary" (click)="selectPatient(patient)">View Details</button>
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <div class="button-group">
+            <button mat-raised-button color="accent" (click)="getData()">Get Current vital</button>        
+            <button mat-raised-button color="accent" (click)="getHistory()">Get History</button>        
+            <button mat-stroked-button color="warn" (click)="makeAnError()">Create Error on Monitoring</button>
+        </div>
+        <div class="flex">
+         
+            <div>
+                <mat-card *ngIf="result" class="result-card">
+                    <h3>Current Patient Monitoring Result</h3>
+                    <mat-divider></mat-divider>
+                    <div class="result-content"> {{ result }} </div>
+                </mat-card>
+            </div>
+           
+            <div>
+                <mat-card *ngIf="history.length > 0" class="history-card">
+                    <h3>Patient History</h3>
+                    <mat-divider></mat-divider>
+                    <ul>
+                        <li *ngFor="let item of history"> {{ item.recordedAt | date }} - {{ item.vitalsData }} </li>
+                    </ul>
+                </mat-card>
+            </div>
+            <div>
+                <mat-card class="patient-info-card" *ngIf="jsonResult?.patinet">
+                    <h3>Patient Information</h3>
+                    <mat-divider></mat-divider>
+                    <div class="patient-info">
+                        <div><strong>ID:</strong> {{ jsonResult.patinet.id }}</div>
+                        <div><strong>Name:</strong> {{ jsonResult.patinet.firstName }} {{ jsonResult.patinet.lastName }}
+                        </div>
+                        <div><strong>Date of Birth:</strong> {{ jsonResult.patinet.dateOfBirth | date }}</div>
+                        <div><strong>Address:</strong> {{ jsonResult.patinet.address }}</div>
+                        <div><strong>Gender:</strong> {{ jsonResult.patinet.gender }}</div>
+                    </div>
+                    <div class="vitals-info">
+                        <strong>Current Vitals:</strong> {{ jsonResult.vitals }}
+                    </div>
+                </mat-card>
+            </div>
+            <div>
+                <mat-card *ngIf="messages.length > 0" class="events-card critical">
+                    <h3 class="critical-title"><mat-icon color="warn">warning</mat-icon> Patient Monitoring Events
+                        (Critical) </h3>
+                    <mat-divider></mat-divider>
+                    <ul>
+                        <li *ngFor="let item of messages">{{ item }}</li>
+                    </ul>
+                </mat-card>
+            </div>
+        </div>
+    </mat-card>
+    <footer class="footer">
+        <span>© 2024 CarePulse</span>
+    </footer>
+    <!-- Updated SCSS Styles -->
