@@ -26,7 +26,7 @@ Content-Type: application/json
 
 {
   "patientId": 1,
-  "vitalsData": "109"
+  "vitalsData": "101"
 }
 
 ### GET PATEIENT HISTORY###
