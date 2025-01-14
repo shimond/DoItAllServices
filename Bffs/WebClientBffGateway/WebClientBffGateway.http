@@ -7,7 +7,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "firstName": "David2",
+  "firstName": "DAS",
   "lastName": "Menachem2",
   "dateOfBirth": "2012-01-08",
   "gender": "Male",
@@ -25,7 +25,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "patientId": 1,
+  "patientId": 2,
   "vitalsData": "101"
 }
 
