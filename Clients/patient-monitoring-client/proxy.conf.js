@@ -2,7 +2,7 @@ module.exports = {
   "/api": {
     ws:true,
     target:
-      process.env["services__webclientbffgateway__http__0"],
+      "http://localhost:7810",
     secure: process.env["NODE_ENV"] !== "development",
     pathRewrite: {
       "^/api": "",
