@@ -4,7 +4,6 @@ using PatientHistoryService.DataAccess;
 
 var builder = WebApplication.CreateBuilder(args); 
  
-builder.AddServiceDefaults();
 builder .Services.AddDbContext<PatientDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb"))
    );
@@ -15,7 +14,6 @@ builder.Services.AddHostedService<PatientHistoryService.PatientHistoryService>()
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
 app.MapOpenApi();
 
 app.Use(async (context, next) =>

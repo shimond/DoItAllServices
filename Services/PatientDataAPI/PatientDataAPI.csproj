@@ -16,8 +16,4 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\CarePulse.ServiceDefaults\CarePulse.ServiceDefaults.csproj" />
-  </ItemGroup>
-
 </Project>

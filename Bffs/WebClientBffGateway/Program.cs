@@ -3,7 +3,6 @@ using WebClientBffGateway.Models.ComblexModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 builder.Services.AddOpenApi();
 builder.Services.AddCors(x => 
                         x.AddDefaultPolicy(o => o.AllowAnyHeader()
@@ -12,12 +11,11 @@ builder.Services.AddCors(x =>
                                                 .AllowAnyMethod()));
 
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
-    .AddServiceDiscoveryDestinationResolver();
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
 
 app.MapGet("fullData", async (int patientId, HttpClient client, IConfiguration configuration) =>
 {
@@ -40,4 +38,3 @@ app.Run();
 
 
 
-// client httpClient pool

@@ -5,7 +5,6 @@ using Infra.Messaging.Rabbit;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 builder.AddRabbitMQEventBus();
 builder.Services.AddSignalR();
 builder.Services.AddHostedService<VitalsMonitorWorker>();
@@ -22,7 +21,6 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
 app.UseCors();
 app.MapHub<VitalsHub>("/vitalsHub");
 

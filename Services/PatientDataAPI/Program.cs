@@ -4,7 +4,6 @@ using PatientDataAPI.DataEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 
 builder.Services.AddDbContext<PatientDataDbContext>(options =>
 {
@@ -13,7 +12,6 @@ builder.Services.AddDbContext<PatientDataDbContext>(options =>
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
 
 using (var scope = app.Services.CreateScope())
 {
