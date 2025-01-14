@@ -2,7 +2,7 @@
 
 
 ### ADD NEW PATIENT ###
-POST {{WebClientBffGateway_HostAddress}}/patients
+POST {{WebClientBffGateway_HostAddress}}/patient
 Accept: application/json
 Content-Type: application/json
 
@@ -26,5 +26,11 @@ Content-Type: application/json
 
 {
   "patientId": 1,
-  "vitalsData": "101"
+  "vitalsData": "109"
 }
+
+### GET PATEIENT HISTORY###
+
+GET {{WebClientBffGateway_HostAddress}}/history/1
+Accept: application/json
+Content-Type: application/json
