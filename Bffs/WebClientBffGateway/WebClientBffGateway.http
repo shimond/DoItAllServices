@@ -1,9 +1,8 @@
 @WebClientBffGateway_HostAddress = http://localhost:7810
 
 
-
 ### ADD NEW PATIENT ###
-POST http://localhost:9012/api/patients
+POST {{WebClientBffGateway_HostAddress}}/patients
 Accept: application/json
 Content-Type: application/json
 
@@ -16,12 +15,12 @@ Content-Type: application/json
 }
 
 ### GET ALL PATIENTS ###
-GET http://localhost:7810/patient
+GET {{WebClientBffGateway_HostAddress}}/patient
 Accept: application/json
 Content-Type: application/json
 
 ### SET CURRENT VITAL ###
-POST http://localhost:7810/vitals/current
+POST {{WebClientBffGateway_HostAddress}}/vitals/current
 Accept: application/json
 Content-Type: application/json
 

@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClientBffGateway", "Bffs
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{EE862998-9577-4DE0-8E2E-649C111649FD}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{932E3C08-07A5-4F54-8CBF-314E541BA7EA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Messaging", "Infra\Infra.Messaging\Infra.Messaging.csproj", "{1542C0E1-C15D-43A0-9FFC-D448D541DB85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAPI", "Services\PatientDataAPI\PatientDataAPI.csproj", "{EAD4BF00-9B3E-4F2B-A841-0A58DC50075D}"
@@ -49,10 +47,6 @@ Global
 		{8829C881-75AB-407B-AAC7-F98F4AD4AC61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8829C881-75AB-407B-AAC7-F98F4AD4AC61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8829C881-75AB-407B-AAC7-F98F4AD4AC61}.Release|Any CPU.Build.0 = Release|Any CPU
-		{932E3C08-07A5-4F54-8CBF-314E541BA7EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{932E3C08-07A5-4F54-8CBF-314E541BA7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{932E3C08-07A5-4F54-8CBF-314E541BA7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{932E3C08-07A5-4F54-8CBF-314E541BA7EA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1542C0E1-C15D-43A0-9FFC-D448D541DB85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1542C0E1-C15D-43A0-9FFC-D448D541DB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1542C0E1-C15D-43A0-9FFC-D448D541DB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
