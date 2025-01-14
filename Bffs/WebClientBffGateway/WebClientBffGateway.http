@@ -1,0 +1,39 @@
+@WebClientBffGateway_HostAddress = http://localhost:7810
+
+POST http://localhost:7810/vitals/current
+Accept: application/json
+Content-Type: application/json
+
+{
+  "patientId": 1,
+  "vitalsData": "101"
+}
+############
+
+GET http://localhost:7810/api/patients
+Accept: application/json
+
+###
+POST http://localhost:9012/api/patients
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "David",
+  "lastName": "Menachem",
+  "dateOfBirth": "2012-01-08",
+  "gender": "Male",
+  "address": "Jerusalem"
+}
+
+###
+GET http://localhost:7810/patient
+Accept: application/json
+Content-Type: application/json
+###
+
+###
+GET http://localhost:7810/fullData?patientId=1
+Accept: application/json
+Content-Type: application/json
+###

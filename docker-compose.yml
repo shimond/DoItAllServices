@@ -1,0 +1,118 @@
+services:
+  angular-client:
+    image: ${DOCKER_REGISTRY-}angularclient
+    build:
+      context: .
+      dockerfile: Clients/patient-monitoring-client/DockerFile
+    container_name: angular-client
+    ports:
+      - "4300:4200"
+    volumes:
+      - C:\Users\Shimo\source\repos\CarePulse\Clients\patient-monitoring-client:/app  # Mounts the current directory to /app in the container
+      - /app/node_modules
+    networks:
+      - patient_monitoring_network
+    environment:
+      - CHOKIDAR_USEPOLLING=true 
+  
+  postgresql:
+    image: postgres:15
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: patientdb
+    ports:
+      - "5432:5432"
+    networks:
+      - patient_monitoring_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"       # RabbitMQ main port
+      - "15672:15672"     # RabbitMQ Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - patient_monitoring_network
+
+  sqlserver:
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     container_name: sqlserver
+     ports:
+       - "1433:1433"       # SQL Server default port
+     environment:
+       SA_PASSWORD: "YourStrong!Password"  # Set a strong password for the SA user
+       ACCEPT_EULA: "Y"  
+     networks:
+      - patient_monitoring_network
+
+  redis:
+    image: redis:latest
+    container_name: patient_monitoring_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - patient_monitoring_network
+
+  patientmonitoringservice:
+    image: ${DOCKER_REGISTRY-}patientmonitoringservice
+    depends_on:
+      - redis
+    build:
+      context: .
+      dockerfile: Services/PatientMonitoringService/Dockerfile
+    networks:
+      - patient_monitoring_network
+      
+  webclientbffgateway:
+    image: ${DOCKER_REGISTRY-}webclientbffgateway
+    build:
+      context: .
+      dockerfile: Bffs/WebClientBffGateway/Dockerfile
+    networks:
+      - patient_monitoring_network
+  
+
+  patienthistoryservice:
+    container_name: patienthistoryservice
+    image: ${DOCKER_REGISTRY-}patienthistoryservice
+    build:
+      context: .
+      dockerfile: Services/PatientHistoryService/Dockerfile
+    networks:
+      - patient_monitoring_network
+  
+  alertingservice:
+    image: ${DOCKER_REGISTRY-}alertingservice
+    build:
+      context: .
+      dockerfile: Services/AlertingService/Dockerfile
+    networks:
+      - patient_monitoring_network
+  
+
+  patientdataapi:
+    image: ${DOCKER_REGISTRY-}patientdataapi
+    container_name: patientdataapi
+    build:
+      context: .
+      dockerfile: Services/PatientDataAPI/Dockerfile
+    networks:
+     - patient_monitoring_network
+  
+volumes:
+  redis_data:
+
+networks:
+  patient_monitoring_network:
+    driver: bridge
+
+
+
+

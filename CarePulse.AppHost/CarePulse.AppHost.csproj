@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>8b4a8d15-12ba-4d51-af31-a0fe8b9afa07</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Oracle" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.0.0" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bffs\WebClientBffGateway\WebClientBffGateway.csproj" />
+    <ProjectReference Include="..\Services\AlertingService\AlertingService.csproj" />
+    <ProjectReference Include="..\Services\PatientDataAPI\PatientDataAPI.csproj" />
+    <ProjectReference Include="..\Services\PatientHistoryService\PatientHistoryService.csproj" />
+    <ProjectReference Include="..\Services\PatientMonitoringService\PatientMonitoringService.csproj" />
+  </ItemGroup>
+
+</Project>

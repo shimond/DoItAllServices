@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "patienthistoryservice": "StartDebugging",
+        "patientmonitoringservice": "StartDebugging",
+        "webclientbffgateway": "StartDebugging",
+        "alertingservice": "StartDebugging",
+        "Patientdataapi": "StartDebugging"
+      }
+    }
+  }
+}
