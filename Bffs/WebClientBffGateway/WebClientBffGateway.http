@@ -1,6 +1,26 @@
 @WebClientBffGateway_HostAddress = http://localhost:7810
 
-POST http://localhost:7810/vitals/current
+
+### ADD NEW PATIENT ###
+POST {{WebClientBffGateway_HostAddress}}/patient
+Accept: application/json
+Content-Type: application/json
+
+{
+  "firstName": "David2",
+  "lastName": "Menachem2",
+  "dateOfBirth": "2012-01-08",
+  "gender": "Male",
+  "address": "Jerusalem"
+}
+
+### GET ALL PATIENTS ###
+GET {{WebClientBffGateway_HostAddress}}/patient
+Accept: application/json
+Content-Type: application/json
+
+### SET CURRENT VITAL ###
+POST {{WebClientBffGateway_HostAddress}}/vitals/current
 Accept: application/json
 Content-Type: application/json
 
@@ -8,32 +28,9 @@ Content-Type: application/json
   "patientId": 1,
   "vitalsData": "101"
 }
-############
 
-GET http://localhost:5596/api/patients
-Accept: application/json
+### GET PATEIENT HISTORY###
 
-###
-POST http://localhost:5596/api/patients
+GET {{WebClientBffGateway_HostAddress}}/history/1
 Accept: application/json
 Content-Type: application/json
-
-{
-  "firstName": "David",
-  "lastName": "Menachem",
-  "dateOfBirth": "2012-01-08",
-  "gender": "Male",
-  "address": "Jerusalem"
-}
-
-###
-GET http://localhost:7810/patient
-Accept: application/json
-Content-Type: application/json
-###
-
-###
-GET http://localhost:7810/fullData?patientId=1
-Accept: application/json
-Content-Type: application/json
-###
