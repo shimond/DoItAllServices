@@ -76,9 +76,10 @@ services:
     build:
       context: .
       dockerfile: Services/PatientDataAPI/Dockerfile
+    depends_on:
+      - postgresql
     networks:
       - patient_monitoring_network
-
 
 
   patienthistoryservice:
