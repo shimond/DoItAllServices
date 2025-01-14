@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CarePulse.ServiceDefaults\CarePulse.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Infra\Infra.Messaging\Infra.Messaging.csproj" />
   </ItemGroup>
 

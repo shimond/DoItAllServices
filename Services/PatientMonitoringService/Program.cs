@@ -4,7 +4,6 @@ using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddServiceDefaults();
 
 builder.Services.AddOpenApi();
 
@@ -17,7 +16,6 @@ builder.Services.AddScoped<IPatientVitalsService, PatientVitalsService>();
 
 var app = builder.Build();
 
-app.MapDefaultEndpoints();
 app.MapOpenApi();
 
 
