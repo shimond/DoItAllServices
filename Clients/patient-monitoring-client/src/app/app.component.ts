@@ -46,7 +46,7 @@ export class AppComponent {
   patients: any[] = [];
   displayedColumns: string[] = ['id', 'firstName', 'lastName', 'actions'];
   constructor() {
-    this.http.get<any[]>(BASE_API_URL + '/api/patient').subscribe((data) => {
+    this.http.get<any[]>(BASE_API_URL + '/patient').subscribe((data) => {
       this.patients = data;
     });
 
@@ -68,25 +68,25 @@ export class AppComponent {
   }
 
   getCombinData(id: number) {
-    this.http.get<any>(BASE_API_URL + '/api/fullData?patientId=' + id).subscribe((data) => {
+    this.http.get<any>(BASE_API_URL + '/fullData?patientId=' + id).subscribe((data) => {
       this.jsonResult = data;
     });
   }
 
   getData() {
-    this.http.get<string>(BASE_API_URL + '/api/vitals/current/' + this.prevPatientId).subscribe((data) => {
+    this.http.get<string>(BASE_API_URL + '/vitals/current/' + this.prevPatientId).subscribe((data) => {
       this.result = data;
     });
   }
 
   getHistory() {
-    this.http.get<PatientHistory[]>(BASE_API_URL + '/api/history/' + this.prevPatientId).subscribe((data) => {
+    this.http.get<PatientHistory[]>(BASE_API_URL + '/history/' + this.prevPatientId).subscribe((data) => {
       this.history = data;
     });
   }
 
   makeAnError() {
-    this.http.get<string>(BASE_API_URL + '/api/vitals/makeError/1').subscribe((data) => {
+    this.http.get<string>(BASE_API_URL + '/vitals/makeError/1').subscribe((data) => {
       this.result = data;
     });
   }

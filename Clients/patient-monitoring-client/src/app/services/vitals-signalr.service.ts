@@ -14,7 +14,7 @@ export class VitalsSignalrService {
 
   private startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${BASE_API_URL}/api/vitalsHub`) // Use the BFF URL to forward to the Alerting Service
+      .withUrl(`${BASE_API_URL}/vitalsHub`) // Use the BFF URL to forward to the Alerting Service
       .withAutomaticReconnect()
       .build();
 

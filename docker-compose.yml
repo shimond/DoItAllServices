@@ -1,5 +1,6 @@
 version: '3.8'
 services:
+  
   angular-client:
     image: ${DOCKER_REGISTRY-}angularclient
     build:
@@ -58,7 +59,6 @@ services:
     networks:
       - patient_monitoring_network
    
-  
   alertingservice:
     container_name: alertingservice
     image: ${DOCKER_REGISTRY-}alertingservice

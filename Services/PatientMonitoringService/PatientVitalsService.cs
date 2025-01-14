@@ -1,7 +1,6 @@
 ﻿using Infra.Messaging;
 using PatientMonitoringService.IntegrationEvents;
 using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace PatientMonitoringService.Services
 {
