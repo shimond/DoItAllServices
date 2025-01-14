@@ -3,16 +3,17 @@ using WebClientBffGateway.Models.ComblexModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient();
 builder.Services.AddOpenApi();
 builder.Services.AddCors(x => 
                         x.AddDefaultPolicy(o => o.AllowAnyHeader()
-                                                .WithOrigins("http://localhost:4300")
+                                                .WithOrigins("http://localhost:44712")
                                                 .AllowCredentials()
                                                 .AllowAnyMethod()));
 
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
-    .AddServiceDiscoveryDestinationResolver();
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
+    //.AddServiceDiscoveryDestinationResolver();
 
 var app = builder.Build();
 
@@ -38,4 +39,3 @@ app.Run();
 
 
 
-// client httpClient pool

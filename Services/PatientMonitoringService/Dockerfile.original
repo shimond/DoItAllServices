@@ -13,7 +13,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Services/PatientMonitoringService/PatientMonitoringService.csproj", "Services/PatientMonitoringService/"]
-COPY ["Infra/Infra.Messaging/Infra.Messaging.csproj", "Infra/Infra.Messaging/"]
 RUN dotnet restore "./Services/PatientMonitoringService/PatientMonitoringService.csproj"
 COPY . .
 WORKDIR "/src/Services/PatientMonitoringService"

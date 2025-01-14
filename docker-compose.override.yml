@@ -2,11 +2,11 @@ services:
   patientmonitoringservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    #   - ASPNETCORE_HTTP_PORTS=8080
-    #   - ASPNETCORE_HTTPS_PORTS=8081
-    # ports:
-    #   - "8080"
-    #   - "8081"
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_HTTPS_PORTS=81
+    ports:
+      - "9912:80"
+      - "9913:81"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -14,12 +14,12 @@ services:
   webclientbffgateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_HTTPS_PORTS=81
       - DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=false
     ports:
-      - "47820:8080"
-      - "47821:8081"
+      - "7810:80"
+      - "47821:81"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -27,31 +27,33 @@ services:
   patienthistoryservice:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
-    #   - ASPNETCORE_HTTP_PORTS=8080
-    # ports:
-    #   - "8080"
+       - ASPNETCORE_HTTP_PORTS=80
+       - ASPNETCORE_HTTPS_PORTS=81
+    ports:
+      - "9915:80"
+      - "9916:81"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
 
   alertingservice:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_HTTPS_PORTS=81
     ports:
-      - "1157:8080"
-      - "1158:8081"
+      - "1157:80"
+      - "1158:81"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
 
   patientdataapi:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=80
+      - ASPNETCORE_HTTPS_PORTS=81
     ports:
-      - "5596:8080"
-      - "5587:8081"
+      - "5596:80"
+      - "5587:81"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
