@@ -42,6 +42,7 @@ app.Run();
 
 
 
+//Docker run commands...
 
 //docker run -p 6379:6379 --name patient_monitoring_redis -d redis:latest
 //docker run -e "RABBITMQ_DEFAULT_USER=guest" -e "RABBITMQ_DEFAULT_PASS=guest" -p 5672:5672 -p 15672:15672 --name rabbitmq -d rabbitmq:3-management
