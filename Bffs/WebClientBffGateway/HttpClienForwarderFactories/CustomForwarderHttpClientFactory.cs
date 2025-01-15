@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Http;
-using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
-using System;
-using System.Net.Http;
 using Yarp.ReverseProxy.Forwarder;
 
 public class CustomForwarderHttpClientFactory : IForwarderHttpClientFactory
