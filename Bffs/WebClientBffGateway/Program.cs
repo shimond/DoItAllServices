@@ -41,7 +41,7 @@ app.MapReverseProxy();
 app.Run();
 
 
-
+//you forgot to...
 //Docker run commands...
 
 //docker run -p 6379:6379 --name patient_monitoring_redis -d redis:latest

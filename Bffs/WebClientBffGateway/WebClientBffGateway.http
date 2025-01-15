@@ -25,7 +25,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "patientId": 2,
+  "patientId": 1,
   "vitalsData": "101"
 }
 
