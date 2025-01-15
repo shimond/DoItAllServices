@@ -1,13 +1,19 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var redisDb = builder.AddRedis("cacheDb")
+    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent)
-    .WithRedisInsight();
+    .WithRedisInsight().WithLifetime(ContainerLifetime.Persistent);
+
 var rabbit = builder.AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent);
+
 var patientDataHistoryDb = builder.AddSqlServer("patinetDataHistoryDb")
+    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
-var patientDataDb = builder.AddSqlServer("patientDataDb")
+
+var patientDataDb = builder.AddPostgres("patientDataDb")
+    .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent);
 
 
@@ -18,11 +24,11 @@ builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
     .WaitFor(bff)
     .WithHttpEndpoint(env: "PORT");
 
-var patientData = builder.AddProject<Projects.PatientDataAPI>("patientdataapi")
+var patientDataApi = builder.AddProject<Projects.PatientDataAPI>("patientdataapi")
     .WithReference(rabbit).WaitFor(rabbit)
     .WithReference(patientDataDb)
     .WaitFor(patientDataDb);
-    
+
 
 var alerting = builder.AddProject<Projects.AlertingService>("alertingservice")
     .WithReference(rabbit)
@@ -40,9 +46,15 @@ var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientm
 
 
 bff
-.WithReference(patientData)
+.WithReference(patientDataApi)
 .WithReference(monitoring)
 .WithReference(history)
-.WithReference(alerting);
+.WithReference(alerting)
+.WaitFor(patientDataApi)
+.WaitFor(monitoring)
+.WaitFor(history)
+.WaitFor(alerting);
+
+//.WithReference("addiia", new Uri("https://jsonplaceholder.typicode.com"))
 
 builder.Build().Run();

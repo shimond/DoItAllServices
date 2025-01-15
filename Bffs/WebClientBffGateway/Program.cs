@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.Services.AddOpenApi();
+
 builder.Services.AddCors(x => 
                         x.AddDefaultPolicy(o => o.AllowAnyHeader()
                                                 .WithOrigins("http://localhost:4300")
@@ -18,6 +19,9 @@ builder.Services.AddReverseProxy()
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
+app.UseCors();
+app.MapOpenApi();
+app.MapReverseProxy();
 
 app.MapGet("fullData", async (int patientId, HttpClient client, IConfiguration configuration) =>
 {
@@ -32,12 +36,5 @@ app.MapGet("fullData", async (int patientId, HttpClient client, IConfiguration c
     return Results.Ok(result);
 });
 
-app.UseCors();
-app.MapOpenApi();
-app.MapReverseProxy();
 
 app.Run();
-
-
-
-// client httpClient pool

@@ -6,8 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
  
 builder.AddServiceDefaults();
 builder .Services.AddDbContext<PatientDbContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb"))
-   );
+       options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb")));
 builder.Services.AddOpenApi();
 
 builder.AddRabbitMQEventBus();
@@ -23,13 +22,6 @@ app.Use(async (context, next) =>
     await next();
 });
 
-//using (var scope = app.Services.CreateScope())
-//{
-//    await Task.Delay(5000);
-//    var dbContext = scope.ServiceProvider.GetRequiredService<PatientDbContext>();
-//    dbContext.Database.EnsureCreated();
-//}
-
 app.MapGet("/history/{patientId}", async (int patientId, PatientDbContext context) =>
 {
     var res = await context.VitalsHistory.Where(x=> x.PatientId == patientId).ToListAsync();
@@ -37,8 +29,3 @@ app.MapGet("/history/{patientId}", async (int patientId, PatientDbContext contex
 });
 
 app.Run();
-
-
-// add endpoint to get data by patient
-// add end point that bring data by the values
-// add configuration to yarp that

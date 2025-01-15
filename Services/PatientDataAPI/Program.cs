@@ -8,7 +8,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddDbContext<PatientDataDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("patientDataDb"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("patientDataDb"));
 });
 
 var app = builder.Build();
