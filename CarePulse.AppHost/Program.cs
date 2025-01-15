@@ -8,23 +8,20 @@ var redisDb = builder.AddRedis("cacheDb")
 var rabbit = builder.AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent);
 
-var patientDataHistoryDb = builder.AddSqlServer("patinetDataHistoryDb")
-    .WithDataVolume()
+var sqlServer = builder.AddSqlServer("sqlserver")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithDataVolume("sqlserver-v");
+
+var patientDataHistoryDb = sqlServer.AddDatabase("patientDataHistoryDb");
+
+var postgres = builder.AddPostgres("postgres")
+    .WithDataVolume("postgres-v")
     .WithLifetime(ContainerLifetime.Persistent);
 
-var patientDataDb = builder.AddPostgres("patientDataDb")
-    .WithDataVolume()
-    .WithLifetime(ContainerLifetime.Persistent);
-
+var patientDataDb = postgres.AddDatabase("patientDataDb");
 
 var bff = builder.AddProject<Projects.WebClientBffGateway>("webclientbffgateway");
 
-var angular = builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
-    .WithReference(bff)
-    .WaitFor(bff)
-    .PublishAsDockerFile()
-
-    .WithHttpEndpoint(env: "PORT");
 
 var patientDataApi = builder.AddProject<Projects.PatientDataAPI>("patientdataapi")
     .WithReference(rabbit).WaitFor(rabbit)
@@ -56,6 +53,14 @@ bff
 .WaitFor(monitoring)
 .WaitFor(history)
 .WaitFor(alerting);
+
+
+
+var angular = builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
+    .WithReference(bff)
+    .WaitFor(bff)
+    .PublishAsDockerFile()
+    .WithHttpEndpoint(env: "PORT");
 
 //.WithReference("addiia", new Uri("https://jsonplaceholder.typicode.com"))
 

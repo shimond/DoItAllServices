@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
  
 builder.AddServiceDefaults();
 builder .Services.AddDbContext<PatientDbContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb")));
+       options.UseSqlServer(builder.Configuration.GetConnectionString("patientDataHistoryDb")));
 builder.Services.AddOpenApi();
 
 builder.AddRabbitMQEventBus();
