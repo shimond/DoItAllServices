@@ -19,9 +19,11 @@ var patientDataDb = builder.AddPostgres("patientDataDb")
 
 var bff = builder.AddProject<Projects.WebClientBffGateway>("webclientbffgateway");
 
-builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
+var angular = builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
     .WithReference(bff)
     .WaitFor(bff)
+    .PublishAsDockerFile()
+
     .WithHttpEndpoint(env: "PORT");
 
 var patientDataApi = builder.AddProject<Projects.PatientDataAPI>("patientdataapi")
