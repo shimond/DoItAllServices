@@ -119,5 +119,6 @@ services:
         - patientdataapi
     networks:
       - patient_monitoring_network
+
 networks:
   patient_monitoring_network:

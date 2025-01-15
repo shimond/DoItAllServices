@@ -5,8 +5,7 @@ using PatientHistoryService.DataAccess;
 var builder = WebApplication.CreateBuilder(args); 
  
 builder .Services.AddDbContext<PatientDbContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb"))
-   );
+       options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb")));
 builder.Services.AddOpenApi();
 
 builder.AddRabbitMQEventBus();
