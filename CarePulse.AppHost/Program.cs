@@ -17,13 +17,12 @@ builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
     .WithReference(bff)
     .WaitFor(bff)
     .WithHttpEndpoint(env: "PORT");
-    //.WithExternalHttpEndpoints()
-    //.PublishAsDockerFile();
 
 var patientData = builder.AddProject<Projects.PatientDataAPI>("patientdataapi")
     .WithReference(rabbit).WaitFor(rabbit)
     .WithReference(patientDataDb)
     .WaitFor(patientDataDb);
+    
 
 var alerting = builder.AddProject<Projects.AlertingService>("alertingservice")
     .WithReference(rabbit)
