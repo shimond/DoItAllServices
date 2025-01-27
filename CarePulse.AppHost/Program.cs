@@ -1,9 +1,14 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+//var patientDataHistoryDb =
+//    builder.AddConnectionString("patientDataHistoryDb", "Server=localhost;Database=aspire;User Id=sa;Password=Password");
+
+
 var redisDb = builder.AddRedis("cacheDb")
     .WithDataVolume()
     .WithLifetime(ContainerLifetime.Persistent)
-    .WithRedisInsight().WithLifetime(ContainerLifetime.Persistent);
+    .WithRedisInsight()
+    .WithLifetime(ContainerLifetime.Persistent);
 
 var rabbit = builder.AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent);
@@ -52,7 +57,7 @@ bff
 .WaitFor(patientDataApi)
 .WaitFor(monitoring)
 .WaitFor(history)
-.WaitFor(alerting);
+.WaitFor(alerting).WithReplicas(4);
 
 
 
