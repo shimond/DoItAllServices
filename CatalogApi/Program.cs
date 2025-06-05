@@ -1,5 +1,6 @@
 using CatalogApi.Contracts;
 using CatalogApi.Services;
+using CatalogApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
@@ -14,6 +15,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseLoggingMiddleware();
 
 app.MapGet("/api/products", async (IProductRepository repository) =>
 {
