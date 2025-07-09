@@ -1,8 +1,6 @@
 version: '3.8'
-services:
-  
+services:  
   angular-client:
-    image: ${DOCKER_REGISTRY-}angularclient
     build:
       context: .
       dockerfile: Clients/patient-monitoring-client/DockerFile
@@ -10,7 +8,7 @@ services:
     ports:
       - "44712:4200"
     volumes:
-      - C:\Users\Shimo\source\repos\DoItAllServices\Clients\patient-monitoring-client:/app  # Mounts the current directory to /app in the container
+      #- C:\Users\Shimo\source\repos\DoItAllServices\Clients\patient-monitoring-client:/app  # Mounts the current directory to /app in the container
       - /app/node_modules
     networks:
       - patient_monitoring_network
@@ -61,42 +59,48 @@ services:
    
   alertingservice:
     container_name: alertingservice
-    image: ${DOCKER_REGISTRY-}alertingservice
+    image: alertingservice
     build:
       context: .
       dockerfile: Services/AlertingService/Dockerfile
     depends_on:
        - rabbitmq
+    environment:
+      - ASPNETCORE_HTTP_PORTS=80
     networks:
       - patient_monitoring_network
 
   patientdataapi:
     container_name: patientdataapi
-    image: ${DOCKER_REGISTRY-}patientdataapi
+    image: patientdataapi
     build:
       context: .
       dockerfile: Services/PatientDataAPI/Dockerfile
     depends_on:
       - postgresql
+    environment:
+      - ASPNETCORE_HTTP_PORTS=80
     networks:
       - patient_monitoring_network
 
 
   patienthistoryservice:
     container_name: patienthistoryservice
-    image: ${DOCKER_REGISTRY-}patienthistoryservice
+    image: patienthistoryservice
     build:
       context: .
       dockerfile: Services/PatientHistoryService/Dockerfile
     depends_on:
        - rabbitmq
+    environment:
+       - ASPNETCORE_HTTP_PORTS=80
     networks:
       - patient_monitoring_network
 
 
   patientmonitoringservice:
     container_name: patientmonitoringservice
-    image: ${DOCKER_REGISTRY-}patientmonitoringservice
+    image: patientmonitoringservice
     build:
       context: .
       dockerfile: Services/PatientMonitoringService/Dockerfile
@@ -107,7 +111,7 @@ services:
 
   
   webclientbffgateway:
-    image: ${DOCKER_REGISTRY-}webclientbffgateway
+    image: webclientbffgateway
     build:
       context: .
       dockerfile: Bffs/WebClientBffGateway/Dockerfile
@@ -117,6 +121,11 @@ services:
         - patienthistoryservice
         - alertingservice
         - patientdataapi
+    environment:
+      - ASPNETCORE_HTTP_PORTS=80
+      - DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER=false
+    ports:
+      - "7810:80"
     networks:
       - patient_monitoring_network
 

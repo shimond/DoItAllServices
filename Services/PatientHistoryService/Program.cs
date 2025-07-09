@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder .Services.AddDbContext<PatientDbContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("patinetDataHistoryDb")));
 builder.Services.AddOpenApi();
-
+await Task.Delay(35000);
 builder.AddRabbitMQEventBus();
 builder.Services.AddHostedService<PatientHistoryService.PatientHistoryService>();
 

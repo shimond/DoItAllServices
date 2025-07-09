@@ -4,9 +4,12 @@ using Infra.Messaging;
 using Infra.Messaging.Rabbit;
 
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine("Wating for EventBus");
 
+await Task.Delay(30000);
 builder.AddRabbitMQEventBus();
 builder.Services.AddSignalR();
+
 builder.Services.AddHostedService<VitalsMonitorWorker>();
 builder.Services.AddCors(options =>
 {

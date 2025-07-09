@@ -11,7 +11,8 @@ builder.Services.AddDbContext<PatientDataDbContext>(options =>
 });
 
 var app = builder.Build();
-
+app.Logger.LogInformation("Wating for db");
+await Task.Delay(35000);
 
 using (var scope = app.Services.CreateScope())
 {

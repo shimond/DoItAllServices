@@ -28,7 +28,7 @@ services:
     environment:
        - ASPNETCORE_ENVIRONMENT=Development
        - ASPNETCORE_HTTP_PORTS=80
-       - ASPNETCORE_HTTPS_PORTS=81
+       #- ASPNETCORE_HTTPS_PORTS=81
     ports:
       - "9915:80"
       - "9916:81"
