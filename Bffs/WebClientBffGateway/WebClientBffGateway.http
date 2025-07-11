@@ -26,7 +26,16 @@ Content-Type: application/json
 
 {
   "patientId": 1,
-  "vitalsData": "101"
+  "vitalsData": {
+    "temperature": 37.4,
+    "bloodPressure": {
+      "systolic": 120,
+      "diastolic": 85
+    },
+    "heartRate": 102,
+    "respiratoryRate": 16,
+    "oxygenSaturation": 98
+  }
 }
 
 ### GET PATEIENT HISTORY###

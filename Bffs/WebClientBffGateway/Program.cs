@@ -1,3 +1,4 @@
+using System.Text.Json;
 using WebClientBffGateway.Models;
 using WebClientBffGateway.Models.ComblexModels;
 using Yarp.ReverseProxy.Forwarder;
@@ -30,14 +31,21 @@ app.MapGet("fullData", async (int patientId, HttpClient client, IConfiguration c
 {
     var monitorUrl = "http://patientmonitoringservice";
     var patientDataUrl = "http://patientdataapi";
-    var monitorDataTask = client.GetFromJsonAsync<string>($"{monitorUrl}/vitals/{patientId}");
+    var monitorDataTask = client.GetStringAsync($"{monitorUrl}/vitals/{patientId}");
     var userDataTask = client.GetFromJsonAsync<PatientBasicInfoModel>($"{patientDataUrl}/api/patients/{patientId}");
     await Task.WhenAll(monitorDataTask, userDataTask);
-    var monitorData = await monitorDataTask;
+    var monitorDataString = await monitorDataTask;
     var userData = await userDataTask;
-    var result = new FullPatientCurrentStatusData(userData, monitorData);
+
+    // Deserialize the string to VitalsData object
+    var options = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
+    var vitalsData = JsonSerializer.Deserialize<VitalsData>(monitorDataString, options) ?? new VitalsData();
+    
+    var result = new FullPatientCurrentStatusData(userData, vitalsData);
     return Results.Ok(result);
 });
-
 
 app.Run();

@@ -2,6 +2,7 @@
 using Infra.Messaging;
 using Microsoft.AspNetCore.SignalR;
 using AlertingService.Hubs;
+using AlertingService.Models;
 
 namespace AlertingService;
 
@@ -34,17 +35,26 @@ public class VitalsMonitorWorker : BackgroundService
         return Task.CompletedTask;
     }
 
-    private bool IsVitalsNormal(string vitalsData)
+    private bool IsVitalsNormal(VitalsData vitalsData)
     {
-        // Logic to determine if the patient's vitals are within normal limits
-        // For simplicity, we assume vitals are critical if heart rate exceeds 100
-        return !vitalsData.Contains("101");
+        if (vitalsData == null)
+            return true;
+
+        // Check various vital signs for abnormalities
+        if (vitalsData.HeartRate > 100) return false;  // High heart rate
+        if (vitalsData.Temperature > 38.0) return false; // Fever
+        if (vitalsData.BloodPressure?.Systolic > 140) return false; // High blood pressure
+        if (vitalsData.BloodPressure?.Diastolic > 90) return false; // High blood pressure
+        if (vitalsData.OxygenSaturation < 95) return false; // Low oxygen saturation
+        if (vitalsData.RespiratoryRate > 20) return false; // High respiratory rate
+
+        return true;
     }
 }
 
 public class PatientVitalsUpdatedEvent : IntegrationEvent
 {
     public int PatientId { get; set; }
-    public string VitalsData { get; set; }
+    public VitalsData VitalsData { get; set; }
     public DateTime Timestamp { get; set; }
 }

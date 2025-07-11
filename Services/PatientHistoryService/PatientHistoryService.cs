@@ -2,6 +2,7 @@ using Infra.Messaging;
 using PatientHistoryService.DataAccess;
 using PatientHistoryService.DataEntities;
 using PatientHistoryService.IntegrationEvents;
+using System.Text.Json;
 
 namespace PatientHistoryService
 {
@@ -30,11 +31,15 @@ namespace PatientHistoryService
             {
                 using var subScope = _serviceProvider.CreateScope();
                 var context = subScope.ServiceProvider.GetRequiredService<PatientDbContext>();
+                
+                // Serialize VitalsData to JSON
+                string vitalsDataJson = JsonSerializer.Serialize(vitalsEvent.VitalsData);
+                
                 // Save vitals to database
                 context.VitalsHistory.Add(new VitalsHistory
                 {
                     PatientId = vitalsEvent.PatientId,
-                    VitalsData = vitalsEvent.VitalsData,
+                    VitalsDataJson = vitalsDataJson,
                     RecordedAt = DateTime.UtcNow
                 });
                 await context.SaveChangesAsync(stoppingToken);
@@ -42,8 +47,5 @@ namespace PatientHistoryService
 
             return Task.CompletedTask;
         }
-
-
     }
-
 }

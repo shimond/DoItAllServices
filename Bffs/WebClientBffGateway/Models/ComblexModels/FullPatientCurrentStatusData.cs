@@ -1,5 +1,6 @@
-﻿namespace WebClientBffGateway.Models.ComblexModels
+﻿using WebClientBffGateway.Models;
+
+namespace WebClientBffGateway.Models.ComblexModels
 {
-    public record FullPatientCurrentStatusData(PatientBasicInfoModel Patinet, string vitals);
-    
+    public record FullPatientCurrentStatusData(PatientBasicInfoModel Patinet, VitalsData Vitals);
 }

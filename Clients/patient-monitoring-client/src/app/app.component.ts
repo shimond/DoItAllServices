@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { ChatAiComponent } from './chat-ai.component';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,8 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
     MatToolbarModule,
     MatFormFieldModule,
-    MatInputModule],
+    MatInputModule,
+    ChatAiComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

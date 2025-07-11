@@ -63,7 +63,7 @@
                         <div><strong>Gender:</strong> {{ jsonResult.patinet.gender }}</div>
                     </div>
                     <div class="vitals-info">
-                        <strong>Current Vitals:</strong> {{ jsonResult.vitals }}
+                        <strong>Current Vitals:</strong> {{ jsonResult.vitals | json }}
                     </div>
                 </mat-card>
             </div>
@@ -83,4 +83,7 @@
     <footer class="footer">
         <span>© 2024 CarePulse</span>
     </footer>
-    <!-- Updated SCSS Styles -->
+
+    <!-- Chat Component -->
+    <app-chat-ai></app-chat-ai>
+    <!-- End Chat Component -->

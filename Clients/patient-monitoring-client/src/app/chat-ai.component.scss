@@ -1,0 +1,6 @@
+.chat-card { margin-top: 24px; }
+.chat-history { max-height: 200px; overflow-y: auto; margin-bottom: 12px; }
+.user-msg { text-align: right; color: #1976d2; }
+.ai-msg { text-align: left; color: #388e3c; }
+.chat-form { display: flex; gap: 8px; }
+.chat-input { flex: 1; }

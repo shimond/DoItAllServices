@@ -1,4 +1,5 @@
 using Infra.Messaging.Rabbit;
+using PatientMonitoringService.Models;
 using PatientMonitoringService.Services;
 using StackExchange.Redis;
 
@@ -49,5 +50,5 @@ app.Run();
 public class VitalsRequest
 {
     public int PatientId { get; set; }
-    public string VitalsData { get; set; }
+    public VitalsData VitalsData { get; set; }
 }

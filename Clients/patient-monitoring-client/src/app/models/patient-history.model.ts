@@ -1,7 +1,17 @@
+export type VitalsData = {
+  temperature: number;
+  bloodPressure: {
+    systolic: number;
+    diastolic: number;
+  };
+  heartRate: number;
+  respiratoryRate: number;
+  oxygenSaturation: number;
+};
+
 export type PatientHistory = {
-    id: number
-    patientId: string
-    vitalsData: string
-    recordedAt: string
-  }
-  
+  id: number;
+  patientId: string;
+  vitalsData: VitalsData;
+  recordedAt: string;
+};

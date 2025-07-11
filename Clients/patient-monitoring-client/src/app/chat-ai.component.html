@@ -1,0 +1,16 @@
+<mat-card class="chat-card">
+  <h3>Ask AI About Patient</h3>
+  <div class="chat-history">
+    <div *ngFor="let msg of chatHistory">
+      <div [ngClass]="{'user-msg': msg.sender === 'user', 'ai-msg': msg.sender === 'ai'}">
+        <strong>{{ msg.sender === 'user' ? 'You' : 'AI' }}:</strong> {{ msg.text }}
+      </div>
+    </div>
+  </div>
+  <form (ngSubmit)="sendChat()" class="chat-form">
+    <mat-form-field class="chat-input" appearance="outline">
+      <input matInput placeholder="Ask about the patient..." [(ngModel)]="chatInput" name="chatInput">
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Send</button>
+  </form>
+</mat-card>

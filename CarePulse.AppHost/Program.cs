@@ -14,8 +14,8 @@ var rabbit = builder.AddRabbitMQ("rabbitMQ")
     .WithLifetime(ContainerLifetime.Persistent);
 
 var sqlServer = builder.AddSqlServer("sqlserver")
-    .WithLifetime(ContainerLifetime.Persistent)
-    .WithDataVolume("sqlserver-v");
+    .WithLifetime(ContainerLifetime.Persistent);
+    
 
 var patientDataHistoryDb = sqlServer.AddDatabase("patientDataHistoryDb");
 
@@ -57,7 +57,7 @@ bff
 .WaitFor(patientDataApi)
 .WaitFor(monitoring)
 .WaitFor(history)
-.WaitFor(alerting).WithReplicas(4);
+.WaitFor(alerting);
 
 
 
