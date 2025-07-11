@@ -1,0 +1,13 @@
+@ChatService_HostAddress = http://localhost:5171
+
+POST {{ChatService_HostAddress}}/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Question": "what is mcp?"
+}
+
+####
+POST http://localhost:2293/api/generate
+Accept: application/json

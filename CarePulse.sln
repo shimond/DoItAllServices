@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarePulse.AppHost", "CarePu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarePulse.ServiceDefaults", "CarePulse.ServiceDefaults\CarePulse.ServiceDefaults.csproj", "{0E5EB0F0-C1A8-96FA-C285-E766EE3BEB47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatService", "Services\ChatService\ChatService.csproj", "{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RagService", "Services\RagService\RagService.csproj", "{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{0E5EB0F0-C1A8-96FA-C285-E766EE3BEB47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E5EB0F0-C1A8-96FA-C285-E766EE3BEB47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E5EB0F0-C1A8-96FA-C285-E766EE3BEB47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +86,10 @@ Global
 		{8829C881-75AB-407B-AAC7-F98F4AD4AC61} = {45836DEA-5E59-41CF-9C21-0BF6997A0CFF}
 		{1542C0E1-C15D-43A0-9FFC-D448D541DB85} = {EE862998-9577-4DE0-8E2E-649C111649FD}
 		{EAD4BF00-9B3E-4F2B-A841-0A58DC50075D} = {DBAFE907-CE19-4870-B621-7C46212F9016}
+		{ABA57B4A-D9DA-3E59-6A10-5DF568D821F3} = {DBAFE907-CE19-4870-B621-7C46212F9016}
+		{FA87EBC8-720D-3FAA-6AF2-2E5B94EC97BC} = {DBAFE907-CE19-4870-B621-7C46212F9016}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92FA1DAB-1103-472B-A3C1-A0F9316988C1}
 	EndGlobalSection
 EndGlobal

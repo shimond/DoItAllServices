@@ -19,14 +19,17 @@
     <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="9.3.1" />
     <PackageReference Include="Aspire.Hosting.Redis" Version="9.3.1" />
     <PackageReference Include="Aspire.Hosting.SqlServer" Version="9.3.2" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.Ollama" Version="9.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Bffs\WebClientBffGateway\WebClientBffGateway.csproj" />
     <ProjectReference Include="..\Services\AlertingService\AlertingService.csproj" />
+    <ProjectReference Include="..\Services\ChatService\ChatService.csproj" />
     <ProjectReference Include="..\Services\PatientDataAPI\PatientDataAPI.csproj" />
     <ProjectReference Include="..\Services\PatientHistoryService\PatientHistoryService.csproj" />
     <ProjectReference Include="..\Services\PatientMonitoringService\PatientMonitoringService.csproj" />
+    <ProjectReference Include="..\Services\RagService\RagService.csproj" />
   </ItemGroup>
 
 </Project>
