@@ -17,14 +17,18 @@ var openAIResource = builder.AddConnectionString("openai");
 
 
 var qdrant = builder.AddContainer("qdrant", "qdrant/qdrant:latest")
-    .WithHttpEndpoint(port: 6333, targetPort: 6333, name: "qdrant-http")
-     .WithEndpoint(port: 6334, targetPort: 6334, name: "qdrant-grpc")
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithHttpEndpoint(port: 9123, targetPort: 6333, name: "qdrant-http")
+     .WithEndpoint(port: 8992, targetPort: 6334, name: "qdrant-grpc")
+     
+      .WithLifetime(ContainerLifetime.Persistent);
+
+var endpoint = qdrant.GetEndpoint("qdrant-grpc");
 
 
 // Add RagService project
 var ragService = builder.AddProject<Projects.RagService>("ragservice")
-    .WaitFor(qdrant);
+    .WaitFor(qdrant)
+    .WithReference(endpoint);
 
 
 

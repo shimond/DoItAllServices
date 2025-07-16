@@ -9,20 +9,17 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton(sp =>
 {
-    var client = new QdrantGrpcClient("localhost", 6334);
+    var uri = new Uri(builder.Configuration["services:qdrant:qdrant-grpc:0"] ?? "tcp://localhost:21925");
+    var client = new QdrantGrpcClient(uri.Host, (int)uri.Port);
     return client;
 });
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.MapOpenApi();
 
 const string collectionName = "patient_vitals";
 
-// Upsert endpoint
 app.MapPost("/rag/upsert", async (RagUpsertRequest req, QdrantGrpcClient qdrant) =>
 {
     // Ensure collection exists (ignore error if already exists)
@@ -84,7 +81,7 @@ app.MapPost("/rag/query", async (RagQueryRequest req, QdrantGrpcClient qdrant) =
         WithPayload = new Qdrant.Client.Grpc.WithPayloadSelector { Enable = true }
     };
     var results = await qdrant.Points.SearchAsync(search);
-    var payloads = results.Result.OrderByDescending(o=> o.Score).Select(r => r.Payload.TryGetValue("text", out var text) ? text.StringValue : null).ToArray();
+    var payloads = results.Result.OrderByDescending(o => o.Score).Select(r => r.Payload.TryGetValue("text", out var text) ? text.StringValue : null).ToArray();
     return Results.Ok(payloads);
 });
 

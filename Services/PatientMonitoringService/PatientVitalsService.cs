@@ -35,7 +35,7 @@ namespace PatientMonitoringService.Services
                 Timestamp = DateTime.UtcNow
             };
 
-            _eventBus.Publish(vitalsEvent);
+            await _eventBus.PublishAsync(vitalsEvent);
         }
 
         public async Task<VitalsData?> GetPatientVitalsAsync(int patientId)

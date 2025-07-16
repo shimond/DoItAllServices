@@ -27,10 +27,10 @@ Content-Type: application/json
 {
   "patientId":2 ,
   "vitalsData": {
-    "temperature": 40.1,
+    "temperature": 36.7,
     "bloodPressure": {
-      "systolic": 140,
-      "diastolic": 55
+      "systolic": 110,
+      "diastolic": 30
     },
     "heartRate": 50,
     "respiratoryRate": 16,

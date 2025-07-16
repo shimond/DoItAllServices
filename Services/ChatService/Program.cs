@@ -48,7 +48,7 @@ app.MapPost("/chat", async (ChatRequest request, IChatClient chatClient, IEmbedd
     if (classification.StartsWith("structured"))
     {
         // Extract patient ID considering conversation context
-        var patientIdPrompt = $"Extract the patient ID number one or more from this conversation. Look at the conversation history and current question. If a patient ID was mentioned in the conversation history, use that ID. If a new patient ID is mentioned in the current question, use the new one. If no patient ID is found anywhere, return [0]. Only return the array with numbers (not string) with all the id you think we can use, nothing else.\n\nConversation history:\n{conversationContext}\n\nCurrent question: {request.Question}";
+        var patientIdPrompt = $"Extract the patient ID number one or more from this conversation. Look at the conversation history and current question. If a patient ID was mentioned in the conversation history, use that ID. If a new patient ID is mentioned in the current question or in later message, use the new one. If no patient ID is found anywhere, return [0]. Only return the array with numbers (not string) with all the id you think we can use, nothing else.\n\nConversation history:\n{conversationContext}\n\nCurrent question: {request.Question}";
         var patientIdRequest = new ChatMessage(ChatRole.User, patientIdPrompt);
         var patientIdResponse = await chatClient.GetResponseAsync(patientIdRequest);
         var patientIds = JsonSerializer.Deserialize<int[]>(patientIdResponse.Text);
@@ -61,6 +61,7 @@ app.MapPost("/chat", async (ChatRequest request, IChatClient chatClient, IEmbedd
             context += $"\nLatest vitals for patient {patientId}: {vitals}";
         }
 
+        context += "\nAlways you return a datetime please return it in human format";
         // Include conversation context in the prompt
         var prompt = $"Conversation context:\n{conversationContext}\n\nCurrent context:\n{context}\n\nCurrent question: {request.Question}";
         var chatRequest2 = new ChatMessage(ChatRole.User, prompt);

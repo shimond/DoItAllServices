@@ -19,10 +19,10 @@ public class VitalsMonitorWorker : BackgroundService
         _eventBus = eventBus;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         // Subscribe to PatientVitalsUpdatedEvent
-        _eventBus.Subscribe<PatientVitalsUpdatedEvent>(async (vitalsEvent) =>
+        await _eventBus.SubscribeAsync<PatientVitalsUpdatedEvent>(async (vitalsEvent) =>
         {
             if (vitalsEvent != null && !IsVitalsNormal(vitalsEvent.VitalsData))
             {
@@ -31,8 +31,6 @@ public class VitalsMonitorWorker : BackgroundService
                     .SendAsync("ReceiveAlert", $"Patient {vitalsEvent.PatientId} has a critical condition!", stoppingToken);
             }
         });
-
-        return Task.CompletedTask;
     }
 
     private bool IsVitalsNormal(VitalsData vitalsData)

@@ -19,7 +19,7 @@ namespace PatientHistoryService
             _logger = logger;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -27,7 +27,7 @@ namespace PatientHistoryService
                 tmpContext.Database.EnsureCreated();
             }
 
-            _eventBus.Subscribe<PatientVitalsUpdatedEvent>(async (vitalsEvent) =>
+            await _eventBus.SubscribeAsync<PatientVitalsUpdatedEvent>(async (vitalsEvent) =>
             {
                 using var subScope = _serviceProvider.CreateScope();
                 var context = subScope.ServiceProvider.GetRequiredService<PatientDbContext>();
@@ -44,8 +44,6 @@ namespace PatientHistoryService
                 });
                 await context.SaveChangesAsync(stoppingToken);
             });
-
-            return Task.CompletedTask;
         }
     }
 }
