@@ -1,7 +1,6 @@
 using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
-
 var ollama = builder.AddOllama("ollama")
     .WithImage("ollama/ollama:0.9.6")
     .WithGPUSupport()
@@ -44,7 +43,7 @@ var rabbit = builder.AddRabbitMQ("rabbitMQ")
 
 var sqlServer = builder.AddSqlServer("sqlserver")
     .WithLifetime(ContainerLifetime.Persistent);
-    
+
 
 var patientDataHistoryDb = sqlServer.AddDatabase("patientDataHistoryDb");
 
@@ -89,7 +88,7 @@ var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientm
 
 // Add Qdrant vector database container for RAG integration
 // Add ChatService project
-var chatService =  builder.AddProject<Projects.ChatService>("chatservice")
+var chatService = builder.AddProject<Projects.ChatService>("chatservice")
     .WithReference(llama3)
     .WithReference(openAIResource)
     .WithReference(monitoring)
@@ -111,15 +110,11 @@ bff
 
 
 var angular = builder.AddNpmApp("angular", "../Clients/patient-monitoring-client")
+    .WithHttpEndpoint(env: "PORT", port: 4200)
     .WithReference(bff)
     .WaitFor(bff)
-    .PublishAsDockerFile()
-    .WithExternalHttpEndpoints()
-    .WithHttpEndpoint(env: "PORT");
-
-//.WithReference("addiia", new Uri("https://jsonplaceholder.typicode.com"))
+    .WithExternalHttpEndpoints();
 
 
-//.WithReference("addiia", new Uri("https://jsonplaceholder.typicode.com"))
 
 builder.Build().Run();

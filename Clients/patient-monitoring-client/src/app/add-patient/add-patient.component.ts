@@ -11,21 +11,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
-  selector: 'app-add-patient',
-  templateUrl: './add-patient.component.html',
-  standalone:true,
-  imports:[
-      MatCardModule,
-      MatFormFieldModule,
-      
-      MatInputModule,
-      MatButtonModule,
-      MatSelectModule,
-    ReactiveFormsModule, 
-    FormsModule,
-    CommonModule,
-  ],
-  styleUrls: ['./add-patient.component.scss']
+    selector: 'app-add-patient',
+    templateUrl: './add-patient.component.html',
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+        FormsModule,
+        CommonModule,
+    ],
+    styleUrls: ['./add-patient.component.scss']
 })
 export class AddPatientComponent {
   patientForm: FormGroup;

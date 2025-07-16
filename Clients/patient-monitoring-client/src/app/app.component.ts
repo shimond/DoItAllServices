@@ -16,25 +16,24 @@ import { MatTableModule } from '@angular/material/table';
 import { ChatAiComponent } from './chat-ai.component';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet,
-    FormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    MatDividerModule,
-    MatTableModule,
-    MatToolbarModule,
-    RouterLink,
-    RouterLinkActive,
-    MatFormFieldModule,
-    MatInputModule,
-    ChatAiComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet,
+        FormsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatIconModule,
+        MatDividerModule,
+        MatTableModule,
+        MatToolbarModule,
+        RouterLink,
+        RouterLinkActive,
+        MatFormFieldModule,
+        MatInputModule,
+        ChatAiComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'patient-monitoring-client';

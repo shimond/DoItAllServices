@@ -15,15 +15,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-chat-ai',
-  templateUrl: './chat-ai.component.html',
-  standalone:true,
-  imports: [CommonModule, MatFormFieldModule,
-    MatButtonModule,
-     MatCardModule, FormsModule, MatInputModule
-
-  ],
-  styleUrls: ['./chat-ai.component.scss']
+    selector: 'app-chat-ai',
+    templateUrl: './chat-ai.component.html',
+    imports: [CommonModule, MatFormFieldModule,
+        MatButtonModule,
+        MatCardModule, FormsModule, MatInputModule
+    ],
+    styleUrls: ['./chat-ai.component.scss']
 })
 export class ChatAiComponent {
   chatHistory: { sender: 'user' | 'ai'; text: string; createdAt?: string }[] = [];
