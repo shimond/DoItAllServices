@@ -26,6 +26,12 @@ builder.Services.AddHttpClient("ragservice", c =>
     c.BaseAddress = new Uri("http://ragservice");
 });
 
+// Add HTTP client for PatientDataAPI
+builder.Services.AddHttpClient("patientdataapi", c =>
+{
+    c.BaseAddress = new Uri("http://patientdataapi");
+});
+
 var app = builder.Build();
 
 app.MapDefaultEndpoints();
@@ -52,22 +58,37 @@ app.MapPost("/vitals", async (VitalsRequest request, IPatientVitalsService vital
 {
     await vitalsService.StorePatientVitalsAsync(request.PatientId, request.VitalsData);
 
-    // 1. Prepare text for embedding
-    var text = $"Patient {request.PatientId}, Temp: {request.VitalsData.Temperature}C, BP: {request.VitalsData.BloodPressure}, HR: {request.VitalsData.HeartRate}, RR: {request.VitalsData.RespiratoryRate}, SpO2: {request.VitalsData.OxygenSaturation}, Date: {DateTime.UtcNow:O}";
+    // Fetch patient information for enhanced text
+    var patientDataClient = httpClientFactory.CreateClient("patientdataapi");
+    string patientName = "";
+    try
+    {
+        var patientResponse = await patientDataClient.GetFromJsonAsync<PatientInfo>($"/api/patients/{request.PatientId}");
+        if (patientResponse != null)
+        {
+            patientName = $"{patientResponse.FirstName} {patientResponse.LastName}";
+        }
+    }
+    catch
+    {
+        patientName = $"Patient {request.PatientId}";
+    }
+
+    // 1. Prepare enhanced text for embedding with patient name
+    var text = $"Patient {request.PatientId} ({patientName}), Temp: {request.VitalsData.Temperature}C, BP: {request.VitalsData.BloodPressure}, HR: {request.VitalsData.HeartRate}, RR: {request.VitalsData.RespiratoryRate}, SpO2: {request.VitalsData.OxygenSaturation}, Date: {DateTime.UtcNow:O}";
 
     // 2. Get embedding from Ollama
-    
-    
     var embedResp = await embeddingGenerator.GenerateVectorAsync(text);
     if (embedResp.IsEmpty) return Results.Problem("Embedding failed");
     
-    // 3. Upsert to RAG
+    // 3. Upsert to RAG with patient name
     var ragClient = httpClientFactory.CreateClient("ragservice");
     var ragReq = new
     {
         PatientId = request.PatientId.ToString(),
         Text = text,
-        Vector = embedResp
+        Vector = embedResp,
+        PatientName = patientName
     };
     await ragClient.PostAsJsonAsync("/rag/upsert", ragReq);
 
@@ -80,6 +101,16 @@ public class VitalsRequest
 {
     public int PatientId { get; set; }
     public VitalsData VitalsData { get; set; }
+}
+
+public class PatientInfo
+{
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public string Gender { get; set; }
+    public string Address { get; set; }
 }
 
 public class OllamaEmbeddingResponse

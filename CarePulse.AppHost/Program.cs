@@ -73,6 +73,7 @@ var alerting = builder.AddProject<Projects.AlertingService>("alertingservice")
 var history = builder.AddProject<Projects.PatientHistoryService>("patienthistoryservice")
     .WithReference(rabbit)
     .WithReference(patientDataHistoryDb)
+    .WithReference(patientDataApi) // Add reference for patient name lookup
     .WaitFor(patientDataHistoryDb)
     .WaitFor(rabbit);
 
@@ -80,6 +81,7 @@ var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientm
     .WithReference(redisDb).WaitFor(redisDb)
     .WithReference(embed)
     .WithReference(ragService)
+    .WithReference(patientDataApi) // Add reference for patient name lookup
     .WithReference(rabbit).WaitFor(rabbit);
 
 // Add Ollama LLM container for local AI inference
@@ -97,6 +99,7 @@ var chatService = builder.AddProject<Projects.ChatService>("chatservice")
     .WithReference(openAIResource)
     .WithReference(monitoring)
     .WithReference(history)
+    .WithReference(patientDataApi) // Add reference for patient name resolution
     .WithReference(embed).WithReference(ragService)
     .WaitFor(ollama);
 

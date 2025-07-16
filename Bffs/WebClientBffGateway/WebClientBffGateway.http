@@ -25,9 +25,9 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "patientId":2 ,
+  "patientId":2,
   "vitalsData": {
-    "temperature": 36.7,
+    "temperature": 44.7,
     "bloodPressure": {
       "systolic": 110,
       "diastolic": 30

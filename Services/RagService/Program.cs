@@ -52,7 +52,8 @@ app.MapPost("/rag/upsert", async (RagUpsertRequest req, QdrantGrpcClient qdrant)
                 Payload =
                 {
                     { "text", new Qdrant.Client.Grpc.Value { StringValue = req.Text } },
-                    { "patientId", new Qdrant.Client.Grpc.Value { StringValue = req.PatientId } }
+                    { "patientId", new Qdrant.Client.Grpc.Value { StringValue = req.PatientId } },
+                    { "patientName", new Qdrant.Client.Grpc.Value { StringValue = req.PatientName ?? "" } }
                 }
             }
         }
@@ -85,7 +86,42 @@ app.MapPost("/rag/query", async (RagQueryRequest req, QdrantGrpcClient qdrant) =
     return Results.Ok(payloads);
 });
 
+// New endpoint to search by patient name
+app.MapPost("/rag/query-by-patient", async (RagPatientQueryRequest req, QdrantGrpcClient qdrant) =>
+{
+    var filter = new Qdrant.Client.Grpc.Filter
+    {
+        Should =
+        {
+            new Qdrant.Client.Grpc.Condition
+            {
+                Field = new Qdrant.Client.Grpc.FieldCondition
+                {
+                    Key = "patientName",
+                    Match = new Qdrant.Client.Grpc.Match
+                    {
+                        Text = req.PatientName
+                    }
+                }
+            }
+        }
+    };
+
+    var search = new Qdrant.Client.Grpc.ScrollPoints
+    {
+        CollectionName = collectionName,
+        Filter = filter,
+        Limit = (uint)req.TopK,
+        WithPayload = new Qdrant.Client.Grpc.WithPayloadSelector { Enable = true }
+    };
+    
+    var results = await qdrant.Points.ScrollAsync(search);
+    var payloads = results.Result.Select(r => r.Payload.TryGetValue("text", out var text) ? text.StringValue : null).ToArray();
+    return Results.Ok(payloads);
+});
+
 app.Run();
 
-public record RagUpsertRequest(string PatientId, string Text, float[] Vector);
+public record RagUpsertRequest(string PatientId, string Text, float[] Vector, string? PatientName = null);
 public record RagQueryRequest(string Query, int TopK = 3);
+public record RagPatientQueryRequest(string PatientName, int TopK = 10);
