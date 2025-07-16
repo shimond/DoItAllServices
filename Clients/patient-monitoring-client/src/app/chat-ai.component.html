@@ -1,15 +1,19 @@
 <mat-card class="chat-card">
   <h3>Ask AI About Patient</h3>
   <div class="chat-history">
-    <div *ngFor="let msg of chatHistory">
-      <div [ngClass]="{'user-msg': msg.sender === 'user', 'ai-msg': msg.sender === 'ai'}">
-        <strong>{{ msg.sender === 'user' ? 'You' : 'AI' }}:</strong> {{ msg.text }}
+    <div *ngFor="let msg of chatHistory" class="chat-msg-row" [ngClass]="{'user-row': msg.sender === 'user', 'ai-row': msg.sender === 'ai'}">
+      <div class="chat-bubble" [ngClass]="{'user-msg': msg.sender === 'user', 'ai-msg': msg.sender === 'ai'}">
+        <div class="msg-meta">
+          <span class="msg-sender">{{ msg.sender === 'user' ? 'You' : 'AI' }}</span>
+          <span class="msg-time" *ngIf="msg.createdAt">{{ msg.createdAt | date:'short' }}</span>
+        </div>
+        <div class="msg-text">{{ msg.text }}</div>
       </div>
     </div>
   </div>
   <form (ngSubmit)="sendChat()" class="chat-form">
     <mat-form-field class="chat-input" appearance="outline">
-      <input matInput placeholder="Ask about the patient..." [(ngModel)]="chatInput" name="chatInput">
+      <input matInput placeholder="Ask about the patient..." [(ngModel)]="chatInput" name="chatInput" autocomplete="off">
     </mat-form-field>
     <button mat-raised-button color="primary" type="submit">Send</button>
   </form>

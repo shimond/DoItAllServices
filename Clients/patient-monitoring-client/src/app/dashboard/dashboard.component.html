@@ -1,0 +1,117 @@
+<!-- DashboardComponent template: moved from app.component.html -->
+<h2 class="title">Patient Monitoring Dashboard</h2>
+<mat-card class="card">
+    <mat-table [dataSource]="patients" class="the-table">
+        <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+            <mat-cell *matCellDef="let patient"> {{patient.id}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="firstName">
+            <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
+            <mat-cell *matCellDef="let patient"> {{patient.firstName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="lastName">
+            <mat-header-cell *matHeaderCellDef> Last Name </mat-header-cell>
+            <mat-cell *matCellDef="let patient"> {{patient.lastName}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let patient">
+                <button mat-raised-button color="primary" (click)="selectPatient(patient)">View Details</button>
+            </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="button-group">
+        <button mat-raised-button color="accent" (click)="getData()">Get Current vital</button>        
+        <button mat-raised-button color="accent" (click)="getHistory()">Get History</button>        
+        <button mat-stroked-button color="warn" (click)="makeAnError()">Create Error on Monitoring</button>
+    </div>
+    <div class="flex">
+        <div>
+            <mat-card *ngIf="result" class="result-card">
+                <h3>Current Patient Monitoring Result</h3>
+                <mat-divider></mat-divider>
+                <div class="result-content"> {{ result }} </div>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card *ngIf="history.length > 0" class="history-card">
+                <h3>Patient History</h3>
+                <mat-divider></mat-divider>
+                <ul>
+                    <li *ngFor="let item of history">
+                        <div><strong>{{ item.recordedAt | date:'short' }}</strong></div>
+                        <ng-container *ngIf="item.vitalsDataJson">
+                          <ng-container *ngIf="parseJson(item.vitalsDataJson) as vitals">
+                            <ul class="vitals-list">
+                              <li *ngIf="vitals.Temperature !== undefined">
+                                <span class="vital-key">Temperature:</span>
+                                <span class="vital-value">{{ vitals.Temperature }} °C</span>
+                              </li>
+                              <li *ngIf="vitals.BloodPressure">
+                                <span class="vital-key">Blood Pressure:</span>
+                                <span class="vital-value">{{ vitals.BloodPressure.Systolic }}/{{ vitals.BloodPressure.Diastolic }} mmHg</span>
+                              </li>
+                              <li *ngIf="vitals.HeartRate !== undefined">
+                                <span class="vital-key">Heart Rate:</span>
+                                <span class="vital-value">{{ vitals.HeartRate }} bpm</span>
+                              </li>
+                              <li *ngIf="vitals.RespiratoryRate !== undefined">
+                                <span class="vital-key">Respiratory Rate:</span>
+                                <span class="vital-value">{{ vitals.RespiratoryRate }} /min</span>
+                              </li>
+                              <li *ngIf="vitals.OxygenSaturation !== undefined">
+                                <span class="vital-key">Oxygen Saturation:</span>
+                                <span class="vital-value">{{ vitals.OxygenSaturation }} %</span>
+                              </li>
+                            </ul>
+                          </ng-container>
+                        </ng-container>
+                    </li>
+                </ul>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card class="patient-info-card" *ngIf="jsonResult?.patinet">
+                <h3 class="info-title">Patient Information</h3>
+                <mat-divider></mat-divider>
+                <div class="patient-info-details">
+                    <div class="info-row"><span class="info-label">ID:</span> <span>{{ jsonResult.patinet.id }}</span></div>
+                    <div class="info-row"><span class="info-label">Name:</span> <span>{{ jsonResult.patinet.firstName }} {{ jsonResult.patinet.lastName }}</span></div>
+                    <div class="info-row"><span class="info-label">Date of Birth:</span> <span>{{ jsonResult.patinet.dateOfBirth | date }}</span></div>
+                    <div class="info-row"><span class="info-label">Address:</span> <span>{{ jsonResult.patinet.address }}</span></div>
+                    <div class="info-row"><span class="info-label">Gender:</span> <span>{{ jsonResult.patinet.gender }}</span></div>
+                </div>
+                <div class="vitals-info" *ngIf="jsonResult?.vitals">
+                  <strong>Current Vitals:</strong>
+                  <ul class="vitals-list">
+                    <li *ngIf="jsonResult.vitals.bloodPressure">
+                      <span class="vital-key">Blood Pressure:</span>
+                      <span class="vital-value">{{ jsonResult.vitals.bloodPressure.systolic }}/{{ jsonResult.vitals.bloodPressure.diastolic }} mmHg</span>
+                    </li>
+                    <li *ngIf="jsonResult.vitals.heartRate">
+                      <span class="vital-key">Heart Rate:</span>
+                      <span class="vital-value">{{ jsonResult.vitals.heartRate }} bpm</span>
+                    </li>
+                  </ul>
+                </div>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card *ngIf="messages.length > 0" class="events-card critical">
+                <mat-icon color="warn">warning</mat-icon>
+                <h3 class="critical-title"> Patient Monitoring Events
+                    (Critical) </h3>
+                <mat-divider></mat-divider>
+                <ul>
+                    <li *ngFor="let item of messages">{{ item }}</li>
+                </ul>
+            </mat-card>
+        </div>
+    </div>
+</mat-card>
+<footer class="footer">
+    <span>© 2024 CarePulse</span>
+</footer>

@@ -1,3 +1,53 @@
+/* Ensure content is not hidden behind the toolbar */
+.main-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+
+
+body, .main-content-with-sidebar {
+  margin: 0;
+  padding: 0;
+}
+
+.main-content-with-sidebar {
+  display: flex;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1 1 0;
+  padding: 96px 16px 0 16px; /* 96px to ensure content is always below toolbar */
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1 1 0;
+  padding: 0 16px;
+  min-width: 0;
+}
+
+.chat-sidebar {
+  width: 0;
+  transition: width 0.3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+  background: #f8fafc;
+  box-shadow: -2px 0 8px rgba(25, 118, 210, 0.08);
+  z-index: 1100;
+  position: relative;
+}
+.chat-sidebar.open {
+  width: 400px;
+  min-width: 320px;
+  max-width: 100vw;
+  padding: 0 8px;
+}
 
 .title {
     text-align: center;

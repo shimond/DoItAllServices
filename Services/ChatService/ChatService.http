@@ -1,11 +1,67 @@
-@ChatService_HostAddress = http://localhost:5171
+﻿@ChatService_HostAddress = http://localhost:5171
 
+### Initial question about patient 1
 POST {{ChatService_HostAddress}}/chat
 Accept: application/json
 Content-Type: application/json
 
 {
-  "Question": "what is mcp?"
+  "Question": "What is the last Blood pressure of patient 1?"
+}
+
+### Follow-up question in the same conversation (no need to mention patient 1 again)
+POST {{ChatService_HostAddress}}/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Question": "What about their heart rate?",
+  "ConversationHistory": [
+    {
+      "Role": "user",
+      "Content": "What is the last Blood pressure of patient 1?"
+    },
+    {
+      "Role": "assistant", 
+      "Content": "Based on the latest vitals for patient 1, their blood pressure is 120/80 mmHg."
+    }
+  ]
+}
+
+### Another follow-up question in the same conversation
+POST {{ChatService_HostAddress}}/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Question": "Is this normal for their age?",
+  "ConversationHistory": [
+    {
+      "Role": "user",
+      "Content": "What is the last Blood pressure of patient 1?"
+    },
+    {
+      "Role": "assistant", 
+      "Content": "Based on the latest vitals for patient 1, their blood pressure is 120/80 mmHg."
+    },
+    {
+      "Role": "user",
+      "Content": "What about their heart rate?"
+    },
+    {
+      "Role": "assistant",
+      "Content": "Patient 1's current heart rate is 72 bpm, which is within the normal range."
+    }
+  ]
+}
+
+### Starting a new conversation about a different patient
+POST {{ChatService_HostAddress}}/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Question": "Show me patient 2's vital signs"
 }
 
 ####

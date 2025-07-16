@@ -1,24 +1,20 @@
 using Qdrant.Client;
 using Qdrant.Client.Grpc;
-using Qdrant.Client.Grpc.Models;
 using System.Text.Json;
+using Google.Protobuf.WellKnownTypes;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 builder.Services.AddSingleton(sp =>
 {
-    // Qdrant running as container, use service name and port
-    var client = new QdrantGrpcClient("qdrant", 6333);
+    var client = new QdrantGrpcClient("localhost", 6334);
     return client;
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -29,24 +25,48 @@ const string collectionName = "patient_vitals";
 // Upsert endpoint
 app.MapPost("/rag/upsert", async (RagUpsertRequest req, QdrantGrpcClient qdrant) =>
 {
-    // Ensure collection exists
-    await qdrant.CreateCollectionAsync(collectionName, new VectorParams { Size = req.Vector.Length, Distance = Distance.Cosine });
-
-    var point = new PointStruct
+    // Ensure collection exists (ignore error if already exists)
+    try
     {
-        Id = req.PatientId,
-        Payload = new() { ["text"] = req.Text },
-        Vector = req.Vector
+        await qdrant.Collections.CreateAsync(new Qdrant.Client.Grpc.CreateCollection
+        {
+            CollectionName = collectionName,
+            VectorsConfig = new Qdrant.Client.Grpc.VectorsConfig
+            {
+                Params = new Qdrant.Client.Grpc.VectorParams
+                {
+                    Size = (uint)req.Vector.Length,
+                    Distance = Qdrant.Client.Grpc.Distance.Cosine
+                }
+            }
+        });
+    }
+    catch { /* ignore if already exists */ }
+
+    var upsert = new Qdrant.Client.Grpc.UpsertPoints
+    {
+        CollectionName = collectionName,
+        Points =
+        {
+            new Qdrant.Client.Grpc.PointStruct
+            {
+                Id = new Qdrant.Client.Grpc.PointId { Uuid = Guid.NewGuid().ToString() },
+                Vectors = new Qdrant.Client.Grpc.Vectors { Vector = new Vector(req.Vector) },
+                Payload =
+                {
+                    { "text", new Qdrant.Client.Grpc.Value { StringValue = req.Text } },
+                    { "patientId", new Qdrant.Client.Grpc.Value { StringValue = req.PatientId } }
+                }
+            }
+        }
     };
-    await qdrant.UpsertPointsAsync(collectionName, new[] { point });
+    await qdrant.Points.UpsertAsync(upsert);
     return Results.Ok();
 });
 
 // Query endpoint
 app.MapPost("/rag/query", async (RagQueryRequest req, QdrantGrpcClient qdrant) =>
 {
-    // For demo: expects req.Query to be a vector serialized as JSON array
-    // In real use, embed the query text to a vector first
     float[] queryVector;
     try
     {
@@ -56,8 +76,15 @@ app.MapPost("/rag/query", async (RagQueryRequest req, QdrantGrpcClient qdrant) =
     {
         return Results.BadRequest("Query must be a float array serialized as JSON.");
     }
-    var results = await qdrant.SearchPointsAsync(collectionName, queryVector, req.TopK);
-    var payloads = results.Select(r => r.Payload["text"]?.ToString()).ToArray();
+    var search = new Qdrant.Client.Grpc.SearchPoints
+    {
+        CollectionName = collectionName,
+        Vector = { queryVector },
+        Limit = (ulong)req.TopK,
+        WithPayload = new Qdrant.Client.Grpc.WithPayloadSelector { Enable = true }
+    };
+    var results = await qdrant.Points.SearchAsync(search);
+    var payloads = results.Result.OrderByDescending(o=> o.Score).Select(r => r.Payload.TryGetValue("text", out var text) ? text.StringValue : null).ToArray();
     return Results.Ok(payloads);
 });
 

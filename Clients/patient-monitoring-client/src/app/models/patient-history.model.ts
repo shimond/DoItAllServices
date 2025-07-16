@@ -12,6 +12,6 @@ export type VitalsData = {
 export type PatientHistory = {
   id: number;
   patientId: string;
-  vitalsData: VitalsData;
+  vitalsDataJson: string;
   recordedAt: string;
 };

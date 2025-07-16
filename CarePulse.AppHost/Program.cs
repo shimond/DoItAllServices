@@ -2,6 +2,33 @@ using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
 
+var ollama = builder.AddOllama("ollama")
+    .WithImage("ollama/ollama:0.9.6")
+    .WithGPUSupport()
+    .WithDataVolume()
+    .WithOpenWebUI();
+
+var llama3 = ollama.AddModel("phi3:mini");
+var embed = ollama.AddModel("nomic-embed-text");
+
+//var openAi = builder.AddOpenAI("my-openai", secret: "OpenAI__ApiKey");
+var openAIResource = builder.AddConnectionString("openai");
+
+//builder.addOpenAI
+
+
+var qdrant = builder.AddContainer("qdrant", "qdrant/qdrant:latest")
+    .WithHttpEndpoint(port: 6333, targetPort: 6333, name: "qdrant-http")
+     .WithEndpoint(port: 6334, targetPort: 6334, name: "qdrant-grpc")
+    .WithLifetime(ContainerLifetime.Persistent);
+
+
+// Add RagService project
+var ragService = builder.AddProject<Projects.RagService>("ragservice")
+    .WaitFor(qdrant);
+
+
+
 //var patientDataHistoryDb =
 //    builder.AddConnectionString("patientDataHistoryDb", "Server=localhost;Database=aspire;User Id=sa;Password=Password");
 
@@ -48,6 +75,8 @@ var history = builder.AddProject<Projects.PatientHistoryService>("patienthistory
 
 var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientmonitoringservice")
     .WithReference(redisDb).WaitFor(redisDb)
+    .WithReference(embed)
+    .WithReference(ragService)
     .WithReference(rabbit).WaitFor(rabbit);
 
 // Add Ollama LLM container for local AI inference
@@ -57,25 +86,15 @@ var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientm
 //    .WithEnvironment("OLLAMA_MODELS", "llama2") // You can change model as needed
 //    .WithLifetime(ContainerLifetime.Persistent);
 
-var ollama = builder.AddOllama("ollama")
-    .WithDataVolume()
-    .WithContainerRuntimeArgs("--gpus=all")
-    .WithOpenWebUI(); 
-
-var phi35 = ollama.AddModel("llama3");
 
 // Add Qdrant vector database container for RAG integration
-var qdrant = builder.AddContainer("qdrant", "qdrant/qdrant:latest")
-    .WithHttpEndpoint(port: 6333, targetPort: 6333, name: "qdrant-http")
-    .WithLifetime(ContainerLifetime.Persistent);
-
-// Add RagService project
-var ragService = builder.AddProject<Projects.RagService>("ragservice")
-    .WaitFor(qdrant);
-
 // Add ChatService project
 var chatService =  builder.AddProject<Projects.ChatService>("chatservice")
-    .WithReference(phi35)
+    .WithReference(llama3)
+    .WithReference(openAIResource)
+    .WithReference(monitoring)
+    .WithReference(history)
+    .WithReference(embed).WithReference(ragService)
     .WaitFor(ollama);
 
 bff
@@ -95,6 +114,7 @@ var angular = builder.AddNpmApp("angular", "../Clients/patient-monitoring-client
     .WithReference(bff)
     .WaitFor(bff)
     .PublishAsDockerFile()
+    .WithExternalHttpEndpoints()
     .WithHttpEndpoint(env: "PORT");
 
 //.WithReference("addiia", new Uri("https://jsonplaceholder.typicode.com"))

@@ -25,14 +25,14 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "patientId": 1,
+  "patientId":2 ,
   "vitalsData": {
-    "temperature": 37.4,
+    "temperature": 40.1,
     "bloodPressure": {
-      "systolic": 120,
-      "diastolic": 85
+      "systolic": 140,
+      "diastolic": 55
     },
-    "heartRate": 102,
+    "heartRate": 50,
     "respiratoryRate": 16,
     "oxygenSaturation": 98
   }
@@ -43,3 +43,12 @@ Content-Type: application/json
 GET {{WebClientBffGateway_HostAddress}}/history/1
 Accept: application/json
 Content-Type: application/json
+####
+
+POST {{WebClientBffGateway_HostAddress}}/chat
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Question": "What is the last Blood pressure of patient 1? "
+}
