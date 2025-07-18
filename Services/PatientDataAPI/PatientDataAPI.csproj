@@ -20,4 +20,8 @@
 		<ProjectReference Include="..\..\CarePulse.ServiceDefaults\CarePulse.ServiceDefaults.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Services\" />
+	</ItemGroup>
+
 </Project>

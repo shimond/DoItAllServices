@@ -1,6 +1,7 @@
 using Aspire.Hosting;
 
 var builder = DistributedApplication.CreateBuilder(args);
+
 var ollama = builder.AddOllama("ollama")
     .WithImage("ollama/ollama:0.9.6")
     .WithGPUSupport()
@@ -10,10 +11,8 @@ var ollama = builder.AddOllama("ollama")
 var llama3 = ollama.AddModel("phi3:mini");
 var embed = ollama.AddModel("nomic-embed-text");
 
-//var openAi = builder.AddOpenAI("my-openai", secret: "OpenAI__ApiKey");
 var openAIResource = builder.AddConnectionString("openai");
 
-//builder.addOpenAI
 
 
 var qdrant = builder.AddContainer("qdrant", "qdrant/qdrant:latest")
@@ -48,7 +47,6 @@ var rabbit = builder.AddRabbitMQ("rabbitMQ")
 var sqlServer = builder.AddSqlServer("sqlserver")
     .WithLifetime(ContainerLifetime.Persistent);
 
-
 var patientDataHistoryDb = sqlServer.AddDatabase("patientDataHistoryDb");
 
 var postgres = builder.AddPostgres("postgres")
@@ -82,7 +80,7 @@ var monitoring = builder.AddProject<Projects.PatientMonitoringService>("patientm
     .WithReference(embed)
     .WithReference(ragService)
     .WithReference(patientDataApi) // Add reference for patient name lookup
-    .WithReference(rabbit).WaitFor(rabbit);
+    .WithReference(rabbit).WaitFor(rabbit).WithReplicas(3);
 
 // Add Ollama LLM container for local AI inference
 //var ollama = builder.AddContainer("ollama", "ollama/ollama:latest")

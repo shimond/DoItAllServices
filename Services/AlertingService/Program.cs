@@ -1,31 +1,27 @@
-using AlertingService;
-using AlertingService.Hubs;
-using Infra.Messaging;
+using AlertingService.Extensions;
 using Infra.Messaging.Rabbit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add service defaults
 builder.AddServiceDefaults();
+
+// Add RabbitMQ event bus
 builder.AddRabbitMQEventBus();
-builder.Services.AddSignalR();
-builder.Services.AddHostedService<VitalsMonitorWorker>();
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()  // Required for SignalR with WebSockets
-              .WithOrigins("http://localhost:4300"); // Update with your Angular app's URL
-    });
-});
+
+// Add alerting services
+builder.Services.AddAlertingServices();
+
+// Add CORS configuration
+builder.Services.AddAlertingCors();
+
 var app = builder.Build();
 
+// Configure pipeline
 app.MapDefaultEndpoints();
-app.UseCors();
-app.MapHub<VitalsHub>("/vitalsHub");
 
+// Configure alerting pipeline
+app.ConfigureAlertingPipeline();
 
 app.Run();
 
